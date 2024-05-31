@@ -39,24 +39,14 @@ export default function Command() {
 
   return (
     <List isLoading={efforts === undefined}>
-      <List.Section title="On" >
-      {efforts?.get("On")?.map((effort, index) => (
-
-        <List.Item key={index} title={effort.title} />
+      {intensities.map((intensity) => (
+        <List.Section title={intensity}>
+          {efforts?.get(intensity)?.map((effort, index) => (
+            <List.Item key={index} title={effort.title} />
+          ))}
+        </List.Section>
       ))}
-      </List.Section>
-      <List.Section title="Ongoing" >
-      {efforts?.get("Ongoing")?.map((effort, index) => (
-
-       <List.Item key={index} title={effort.title} />
-      ))}
-      </List.Section>
-      <List.Section title="Simmering">
-      {efforts?.get("Simmering")?.map((effort, index) => (
-
-       <List.Item key={index} title={effort.title} />
-      ))}
-      </List.Section>
+    
     </List>
   );
 }
