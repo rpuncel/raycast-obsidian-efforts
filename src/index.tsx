@@ -5,6 +5,7 @@ import path from 'path';
 
 interface Effort {
   title: string;
+  path: string;
   intensity: string;
 }
 
@@ -20,7 +21,7 @@ function getDirectories(pathStr: string) {
       console.log(`file: ${file} isFile: ${isFile}`)
       return isFile && file.endsWith('.md');
       }).map((file) => {
-        return { title: file, intensity: intensity }
+        return { title: file, intensity: intensity, path: path.join(dir, file) }
       });
     efforts.set(intensity, files)
   });
@@ -42,7 +43,15 @@ export default function Command() {
       {intensities.map((intensity) => (
         <List.Section title={intensity}>
           {efforts?.get(intensity)?.map((effort, index) => (
-            <List.Item key={index} title={effort.title} />
+            <List.Item
+              key={index}
+              title={effort.title} 
+              actions={
+                <ActionPanel>
+                  <Action.Open title="Open in Obsidian" target={`obsidian://open?path=${effort.path}`}/>
+                </ActionPanel>
+              }
+            />
           ))}
         </List.Section>
       ))}
