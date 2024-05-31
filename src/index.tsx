@@ -1,4 +1,4 @@
-import { ActionPanel, Detail, List, Action } from "@raycast/api";
+import { ActionPanel, Detail, List, Action, getPreferenceValues } from "@raycast/api";
 import { useEffect, useState } from "react";
 import fs from 'fs';
 import path from 'path';
@@ -7,6 +7,10 @@ interface Effort {
   title: string;
   path: string;
   intensity: string;
+}
+
+interface Preferences {
+  effortsFolder: string;
 }
 
 const intensities = ["On", "Ongoing", "Simmering"]
@@ -29,12 +33,12 @@ function getDirectories(pathStr: string) {
      
 }
 
-const EFFORTS_DIR = '/Users/rpuncel/Documents/Personal/Efforts'
 export default function Command() {
+  const preferences = getPreferenceValues<Preferences>();
   const [ efforts, setEfforts ] = useState<Map<string, Effort[]>>();
 
   useEffect(() => {
-    const efforts = getDirectories(EFFORTS_DIR)
+    const efforts = getDirectories(preferences.effortsFolder);
     setEfforts(efforts)
   }, []);
 
