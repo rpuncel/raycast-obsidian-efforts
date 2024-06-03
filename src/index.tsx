@@ -1,9 +1,9 @@
-import { ActionPanel, Form, List, Action, getPreferenceValues } from "@raycast/api";
+import { ActionPanel, List, Action, getPreferenceValues } from "@raycast/api";
 import { useEffect, useState } from "react";
-import fs from "fs";
-import path from "path";
+import { NewEffortForm } from "./components/NewEffortForm";
+import { getDirectories } from "./lib/getDirectories";
 
-interface Effort {
+export interface Effort {
   title: string;
   path: string;
   intensity: string;
@@ -13,7 +13,7 @@ interface Preferences {
   effortsFolder: string;
 }
 
-const intensities = [
+export const intensities = [
   {
     name: "On",
     icon: "🔥",
@@ -27,48 +27,6 @@ const intensities = [
     icon: "〰︎",
   },
 ];
-
-function getDirectories(pathStr: string) {
-  const efforts = new Map<string, Effort[]>();
-  intensities
-    .map((intensity) => intensity.name)
-    .forEach((intensity) => {
-      const dir = path.join(pathStr, intensity);
-      console.log("looking in dir: ", dir);
-      const files = fs
-        .readdirSync(dir)
-        .filter(function (file) {
-          const isFile = fs.statSync(path.join(dir, file)).isFile();
-          console.log(`file: ${file} isFile: ${isFile}`);
-          return isFile && file.endsWith(".md");
-        })
-        .map((file) => {
-          return { title: file, intensity: intensity, path: path.join(dir, file) };
-        });
-      efforts.set(intensity, files);
-    });
-  return efforts;
-}
-
-function NewEffortForm() {
-  const intensityItems = intensities.map((intensity) => (
-    <Form.Dropdown.Item key={intensity.name} value={intensity.name} title={intensity.name} />
-  ));
-  return (
-    <Form
-      navigationTitle="Create a new effort"
-      actions={
-        <ActionPanel>
-          <Action.SubmitForm title="Submit New Effort" onSubmit={(values) => console.log(values)} />
-        </ActionPanel>
-      }
-    >
-      <Form.Dropdown id="intensity" title="Intensity">
-        {intensityItems}
-      </Form.Dropdown>
-    </Form>
-  );
-}
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
