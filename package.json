@@ -14,7 +14,7 @@
       "mode": "view"
     },
     {
-      "name": "createNewList",
+      "name": "create-new-effort",
       "title": "Create New Effort",
       "description": "Create a new effort note in Obsidian.",
       "mode": "view"
