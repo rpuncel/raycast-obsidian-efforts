@@ -1,4 +1,4 @@
-import { ActionPanel, Detail, List, Action, getPreferenceValues } from "@raycast/api";
+import { ActionPanel, Form, List, Action, getPreferenceValues } from "@raycast/api";
 import { useEffect, useState } from "react";
 import fs from "fs";
 import path from "path";
@@ -50,6 +50,19 @@ function getDirectories(pathStr: string) {
   return efforts;
 }
 
+function NewEffortForm() {
+  const intensityItems = intensities.map((intensity) => (
+    <Form.Dropdown.Item value={intensity.name} title={intensity.name} />
+  ));
+  return (
+    <Form navigationTitle="Create a new effort">
+      <Form.Dropdown id="intensity" title="Intensity">
+        {intensityItems}
+      </Form.Dropdown>
+    </Form>
+  );
+}
+
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   const [efforts, setEfforts] = useState<Map<string, Effort[]>>();
@@ -70,6 +83,7 @@ export default function Command() {
               actions={
                 <ActionPanel>
                   <Action.Open title="Open in Obsidian" target={`obsidian://open?path=${effort.path}`} />
+                  <Action.Push title="Create new effort" target={<NewEffortForm />} />
                 </ActionPanel>
               }
             />
