@@ -90,7 +90,7 @@ export default function Command() {
               actions={
                 <ActionPanel>
                   <Action.Open title="Open in Obsidian" target={`obsidian://open?path=${effort.path}`} />
-                  <Action.Push title="Create new effort" target={<NewEffortForm />} />
+                  <Action.Push title="Create New Effort" target={<NewEffortForm />} />
                 </ActionPanel>
               }
             />
