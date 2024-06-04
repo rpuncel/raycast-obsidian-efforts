@@ -12,6 +12,12 @@
       "title": "Show Efforts",
       "description": "Show effort notes in obsidian.",
       "mode": "view"
+    },
+    {
+      "name": "create-new-effort",
+      "title": "Create New Effort",
+      "description": "Create a new effort note in Obsidian.",
+      "mode": "view"
     }
   ],
   "preferences": [
