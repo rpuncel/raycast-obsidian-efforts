@@ -1,9 +1,21 @@
-import { Form, ActionPanel, Action } from "@raycast/api";
+import {
+  Form,
+  ActionPanel,
+  Action,
+  getPreferenceValues,
+  popToRoot,
+  showToast,
+  launchCommand,
+  LaunchType,
+} from "@raycast/api";
 import { intensities } from "../globals";
 import { useState } from "react";
+import { writeEffort } from "../lib/fs";
 
 export function NewEffortForm() {
+  const { effortsFolder } = getPreferenceValues<Preferences>();
   const [titleError, setTitleError] = useState<string | undefined>();
+
   function dropTitleErrorIfNeeded() {
     if (titleError && titleError.length > 0) {
       setTitleError(undefined);
@@ -26,7 +38,23 @@ export function NewEffortForm() {
       navigationTitle="Create a new effort"
       actions={
         <ActionPanel>
-          <Action.SubmitForm title="Submit New Effort" onSubmit={(values) => console.log(values)} />
+          <Action.SubmitForm
+            title="Submit New Effort"
+            onSubmit={({ title, intensity }) => {
+              const newFile = writeEffort(title, intensity, effortsFolder);
+              showToast({
+                title: "Effort created successfully",
+                primaryAction: {
+                  title: "View in Efforts List",
+                  onAction: async () => {
+                    console.log(newFile);
+                    await launchCommand({ name: "index", type: LaunchType.UserInitiated, fallbackText: title });
+                  },
+                },
+              });
+              popToRoot();
+            }}
+          />
         </ActionPanel>
       }
     >

@@ -1,7 +1,7 @@
 import { ActionPanel, List, Action, getPreferenceValues } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { NewEffortForm } from "./components/NewEffortForm";
-import { getDirectories } from "./lib/getDirectories";
+import { getDirectories } from "./lib/fs";
 
 export interface Effort {
   title: string;
